@@ -1,0 +1,56 @@
+<!doctype html>
+<html>
+<head>
+    <!-- CSS only -->
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<title>Verify OTP page</title>
+
+<body>
+<div id="main" class="container">
+    <h3>Enter OTP</h3>
+    <span id="captcha"></span>
+    <form action="/app/verifyOTP/" id="verifyOTP">
+        <input id="otp" type="number" inputmode="numeric" name="otp" placeholder="otp">
+        <input class="d-none" id="mobile" type="number" name="mobile" placeholder="mobile" value="">
+        <br /><br />
+        <input type="button" value="Submit" onclick="submitOTP()">
+    </form>
+</div>
+</body>
+<script>
+var urlParams = new URLSearchParams(window.location.search);
+var mobile = urlParams.get('mobile');
+document.getElementById("mobile").value=mobile;
+
+var otptext = document.getElementById('otp');
+otptext.focus();
+
+var xhttp = new XMLHttpRequest();
+xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+       console.log(xhttp.responseText);
+    }
+};
+
+xhttp.open("GET", "/app/getOTP/"+mobile);
+xhttp.send();
+
+function submitOTP(){
+                    $.ajax({
+                      type: 'POST',
+                      url: "/app/verifyOTP/", //- action form
+                      data: {otp:$('#otp').val(),mobile:$('#mobile').val()},
+                      success: function(s){
+                        console.log(s.responseText);
+                        window.location.href = "/captcha-submit.html?mobilenumber="+mobile;
+                      },
+                      error: function(e){
+                       console.log(e.responseText);
+                      }
+                    });
+            }
+</script>
+</html>

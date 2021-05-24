@@ -1,0 +1,47 @@
+<!doctype html>
+<html>
+<head>
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<title>Captcha CODE page</title>
+
+<body>
+
+<div id="main" class="container">
+    <h3>Enter Captcha</h3>
+    <span id="captcha"></span>
+    </br>
+    <form action="/app/submitCaptcha/" method="post" id="submitcaptcha">
+        <input id="captchatext" type="text" name="captcha" placeholder="captcha">
+        <input  class="d-none" id="mobileNumber" type="number" name="mobileNumber" placeholder="mobileNumber" value="">
+        <br /><br />
+        <input type="submit" value="Submit">
+    </form>
+</div>
+
+</body>
+<script>
+
+var urlParams = new URLSearchParams(window.location.search);
+var mobile = urlParams.get('mobilenumber');
+var captchatext = document.getElementById('captchatext');
+captchatext.focus();
+
+var xhttp = new XMLHttpRequest();
+xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+       // Typical action to be performed when the document is ready:
+       var responseText = xhttp.responseText.replace(/\\/g, '');
+       console.log(responseText);
+         document.getElementById("captcha").innerHTML=responseText;
+         document.getElementById("mobileNumber").value=mobile;
+    }
+};
+
+xhttp.open("GET", "/app/getcaptcha/"+mobile);
+xhttp.send();
+
+    </script>
+</html>
