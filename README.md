@@ -2,7 +2,7 @@
 Steps to use the app
 
 1. Update the user section for user specific preferences
-   
+   File: application.properties
 2. Build the app using maven: mvn clean install -Dmaven.test.skip=true
 3. start the app: java -jar target/CowinVaccineScheduler-0.0.1-SNAPSHOT.jar
 4. One available.. a alarm will be raised by application then
